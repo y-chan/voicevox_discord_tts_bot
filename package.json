@@ -6,6 +6,11 @@
   "main": "index.ts",
   "license": "LGPL-3.0",
   "author": "y-chan <y-chan@y-chan.dev>",
+  "scripts": {
+    "start": "ts-node -r tsconfig-paths/register index.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register index.ts",
+    "lint": "eslint ."
+  },
   "dependencies": {
     "@discordjs/opus": "^0.6.0",
     "@discordjs/voice": "^0.6.0",
