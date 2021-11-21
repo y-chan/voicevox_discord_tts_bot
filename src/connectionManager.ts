@@ -80,13 +80,17 @@ export default class ConnectionManager {
               5_000
             )
           } catch {
-            this.connection.destroy()
+            try {
+              this.connection.destroy()
+            } catch {}
           }
         } else if (this.connection.rejoinAttempts < 5) {
           await sleep((this.connection.rejoinAttempts + 1) * 5_000)
           this.connection.rejoin()
         } else {
-          this.connection.destroy()
+          try {
+            this.connection.destroy()
+          } catch {}
         }
       } else if (
         !this.readyLock &&
