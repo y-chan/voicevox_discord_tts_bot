@@ -294,16 +294,6 @@ export default class TextToSpeechBot extends EventEmitter {
       return
     }
 
-    if (speakerId < 0 || 7 < speakerId) {
-      await this.sendEmbed(
-        interaction,
-        '話者の設定に失敗しました。',
-        '話者は0から7で設定してください。',
-        false
-      )
-      return
-    }
-
     connectionManager.speakerId = speakerId
     const values = { speakerId }
     if (connectionManager.dbFound) {
