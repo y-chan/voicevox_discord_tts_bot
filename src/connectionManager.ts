@@ -181,9 +181,9 @@ export default class ConnectionManager {
       const readItem = this.readQueue[0]
       let userName: string
       if (!this.samePerson) {
-        userName = ''
-      } else {
         userName = readItem.userName
+      } else {
+        userName = ''
       }
       let prefix: string
       if (userName && readItem.containAttachment?.length) {
