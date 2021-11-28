@@ -205,7 +205,7 @@ export default class ConnectionManager {
         text.slice(0, 100) + (text.length > 100 ? '、以下略' : ''),
         this.speakerId
       )
-      audioQuery.speedScale = 1.2
+      audioQuery.speedScale = 1.0
       wav = this.textToSpeechBot.engine.synthesis(audioQuery, this.speakerId)
     } catch (e) {
       console.log(e)
