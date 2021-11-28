@@ -67,6 +67,7 @@ export const speakerList: ApplicationCommandOptionChoice[] = [
 export default class TextToSpeechBot extends EventEmitter {
   public defaultVolume = 0.5
   public defaultSpeakerId = 0
+  public defaultName = true
   public engine: Engine
 
   constructor(public client: Client) {
@@ -144,15 +145,18 @@ export default class TextToSpeechBot extends EventEmitter {
         const dbFound = !!guildSetting
         let volume = this.defaultVolume
         let speakerId = this.defaultSpeakerId
+        let name = this.defaultName
         if (guildSetting) {
           volume = guildSetting.volume
           speakerId = guildSetting.speakerId
+          name = guildSetting.name
         }
         const connectionManager = new ConnectionManager(
           connection,
           dbFound,
           volume,
           speakerId,
+          name,
           interaction,
           this
         )
@@ -339,6 +343,65 @@ export default class TextToSpeechBot extends EventEmitter {
     await this.sendEmbed(
       interaction,
       `現在の話者は\`${speakerName}\`です。`,
+      undefined,
+      false
+    )
+  }
+
+  async setReadName(
+    connectionManager: ConnectionManager | undefined,
+    interaction: CommandInteraction,
+    name: boolean
+  ): Promise<void> {
+    if (connectionManager === undefined) {
+      await this.sendEmbed(
+        interaction,
+        'Botがボイスチャンネルに接続されていません。',
+        'Botをボイスチャンネルに接続してから再度お試しください。',
+        false
+      )
+      return
+    }
+
+    connectionManager.name = name
+    const values = { name }
+    if (connectionManager.dbFound) {
+      await GuildSetting.update(values, {
+        where: { guildId: connectionManager.connection.joinConfig.guildId },
+      })
+    } else {
+      await GuildSetting.create({
+        guildId: connectionManager.connection.joinConfig.guildId,
+        ...values,
+      })
+      connectionManager.dbFound = true
+    }
+
+    await this.sendEmbed(
+      interaction,
+      `名前を読み上げ${connectionManager.name ? 'る' : 'ない'}ようにしました！`,
+      undefined,
+      false
+    )
+  }
+
+  async getReadName(
+    connectionManager: ConnectionManager | undefined,
+    interaction: CommandInteraction
+  ): Promise<void> {
+    if (connectionManager === undefined) {
+      await this.sendEmbed(
+        interaction,
+        'Botがボイスチャンネルに接続されていません。',
+        'Botをボイスチャンネルに接続してから再度お試しください。',
+        false
+      )
+      return
+    }
+
+    await this.sendEmbed(
+      interaction,
+      `現在、名前を読み上げま${connectionManager.name ? 'す' : 'せん'}。`,
       undefined,
       false
     )

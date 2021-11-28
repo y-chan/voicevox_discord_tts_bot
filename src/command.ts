@@ -110,5 +110,34 @@ export function createCommandList(
         }
       },
     },
+    {
+      name: 'vname',
+      description:
+        '名前を読み上げるか否かを設定できます。選択しなかった場合、今の設定を表示します。',
+      options: [
+        {
+          name: 'name',
+          type: 'BOOLEAN' as const,
+          description: '読み上げるか否かを選択してください。',
+          required: false,
+        },
+      ],
+      async execute(interaction, connectionManager) {
+        if (connectionManager === false) return
+        const name = interaction.options.get('name')?.value
+        if (name) {
+          await client.textToSpeechBot.setReadName(
+            connectionManager,
+            interaction,
+            name as boolean
+          )
+        } else {
+          await client.textToSpeechBot.getSpeakerId(
+            connectionManager,
+            interaction
+          )
+        }
+      },
+    },
   ]
 }

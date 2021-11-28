@@ -40,6 +40,7 @@ export default class ConnectionManager {
     public dbFound: boolean,
     public volume: number,
     public speakerId: number,
+    public name: boolean,
     public calledInteraction: CommandInteraction,
     private textToSpeechBot: TextToSpeechBot
   ) {
@@ -178,14 +179,22 @@ export default class ConnectionManager {
     let wav: Buffer
     try {
       const readItem = this.readQueue[0]
-      const userName = readItem.userName
+      let userName: string
+      if (!this.samePerson) {
+        userName = ''
+      } else {
+        userName = readItem.userName
+      }
+      let prefix: string
+      if (userName && readItem.containAttachment?.length) {
+        prefix =
+          (this.name ? 'だれか' : userName) +
+          `が${readItem.containAttachment}を送信しました。`
+      } else {
+        prefix = userName + (userName ? '。' : '')
+      }
       const text =
-        (userName && !this.samePerson
-          ? userName +
-            (readItem.containAttachment?.length
-              ? `が${readItem.containAttachment}を送信しました。`
-              : '。')
-          : '') +
+        prefix +
         readItem.content
           .replace('\n', '。')
           .replace(
