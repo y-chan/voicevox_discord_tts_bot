@@ -191,7 +191,8 @@ export default class ConnectionManager {
           (this.name ? 'だれか' : userName) +
           `が${readItem.containAttachment}を送信しました。`
       } else {
-        prefix = userName + (userName ? '。' : '')
+        prefix = this.name ? userName : ''
+        prefix = prefix + (prefix ? '。' : '')
       }
       const text =
         prefix +
