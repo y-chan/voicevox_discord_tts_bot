@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "voicevox_discord_tts_bot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "this is tts bot which use voicevox",
   "main": "index.ts",
   "license": "LGPL-3.0",
