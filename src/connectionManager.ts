@@ -188,7 +188,7 @@ export default class ConnectionManager {
       let prefix: string
       if (userName && readItem.containAttachment?.length) {
         prefix =
-          (this.name ? 'だれか' : userName) +
+          (this.name ? userName : 'だれか') +
           `が${readItem.containAttachment}を送信しました。`
       } else {
         prefix = this.name ? userName : ''
