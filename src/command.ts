@@ -125,14 +125,14 @@ export function createCommandList(
       async execute(interaction, connectionManager) {
         if (connectionManager === false) return
         const name = interaction.options.get('name')?.value
-        if (name) {
+        if (name !== undefined) {
           await client.textToSpeechBot.setReadName(
             connectionManager,
             interaction,
             name as boolean
           )
         } else {
-          await client.textToSpeechBot.getSpeakerId(
+          await client.textToSpeechBot.getReadName(
             connectionManager,
             interaction
           )
