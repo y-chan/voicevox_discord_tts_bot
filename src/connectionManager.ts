@@ -50,6 +50,7 @@ export default class ConnectionManager {
         oldState.status !== AudioPlayerStatus.Idle
       ) {
         if (this.readQueue.length > 0 && this.readQueue[0].readEnd) {
+          if (this.readQueue[0].content.length !== 0) await sleep(500)
           this.connection?.destroy()
           await this.textToSpeechBot.sendEmbed(
             this.calledInteraction,

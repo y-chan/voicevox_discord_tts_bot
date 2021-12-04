@@ -19,7 +19,7 @@ import Engine from 'node-voicevox-engine'
 import GuildSetting from '@/model/guildSetting'
 import Client from '@/src/client'
 import ConnectionManager from '@/src/connectionManager'
-import { sendReply } from '@/src/util'
+import { sendReply, sleep } from '@/src/util'
 
 export const speakerList: ApplicationCommandOptionChoice[] = [
   {
@@ -161,6 +161,7 @@ export default class TextToSpeechBot extends EventEmitter {
           this
         )
         this.client.connectionManagers.set(guildId, connectionManager)
+        await sleep(500)
         await connectionManager.readText()
       } catch (e) {
         console.log(e)
