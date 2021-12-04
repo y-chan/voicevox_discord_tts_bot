@@ -96,7 +96,7 @@ export function createCommandList(
       async execute(interaction, connectionManager) {
         if (connectionManager === false) return
         const speaker = interaction.options.get('speaker')?.value
-        if (speaker) {
+        if (speaker !== undefined) {
           await client.textToSpeechBot.setSpeakerId(
             connectionManager,
             interaction,
