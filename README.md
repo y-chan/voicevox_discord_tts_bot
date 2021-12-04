@@ -50,10 +50,10 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/libtorch/lib"
 ### VOICEVOX Core のインストール
 
 ```bash
-# VOICEVOX Core (0.7.0)を最上層にインストールする
+# VOICEVOX Core (0.9.0)を最上層にインストールする
 # わかる人は適宜好きな場所にダウンロード・解凍してください。
 cd /
-wget https://github.com/Hiroshiba/voicevox_core/releases/download/0.7.0/core.zip
+wget https://github.com/Hiroshiba/voicevox_core/releases/download/0.9.0/core.zip
 unzip core.zip
 mv core voicevox_core
 
