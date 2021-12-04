@@ -161,7 +161,7 @@ export default class TextToSpeechBot extends EventEmitter {
           this
         )
         this.client.connectionManagers.set(guildId, connectionManager)
-        await sleep(500)
+        await sleep(1000)
         await connectionManager.readText()
       } catch (e) {
         console.log(e)
