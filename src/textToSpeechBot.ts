@@ -24,11 +24,11 @@ import { sendReply, sleep } from '@/src/util'
 export const speakerList: ApplicationCommandOptionChoice[] = [
   {
     name: '四国めたん(ノーマル)',
-    value: 0,
+    value: 2,
   },
   {
     name: '四国めたん(あまあま)',
-    value: 2,
+    value: 0,
   },
   {
     name: '四国めたん(セクシー)',
@@ -40,11 +40,11 @@ export const speakerList: ApplicationCommandOptionChoice[] = [
   },
   {
     name: 'ずんだもん(ノーマル)',
-    value: 1,
+    value: 3,
   },
   {
     name: 'ずんだもん(あまあま)',
-    value: 3,
+    value: 1,
   },
   {
     name: 'ずんだもん(セクシー)',
