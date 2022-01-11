@@ -62,6 +62,10 @@ export const speakerList: ApplicationCommandOptionChoice[] = [
     name: '波音リツ',
     value: 9,
   },
+  {
+    name: '雨晴はう',
+    value: 10,
+  }
 ]
 
 export default class TextToSpeechBot extends EventEmitter {
