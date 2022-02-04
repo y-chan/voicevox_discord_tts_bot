@@ -203,6 +203,7 @@ export default class ConnectionManager {
             new RegExp('http(s)?://[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+'),
             '。URL。'
           )
+          .replace(/<a?:([^<]*):([^<]*)>/g, '。スタンプ。')
       const audioQuery = this.textToSpeechBot.engine.audio_query(
         text.slice(0, 100) + (text.length > 100 ? '、以下略' : ''),
         this.speakerId
