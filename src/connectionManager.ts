@@ -140,7 +140,7 @@ export default class ConnectionManager {
             if (attachment.contentType.startsWith('image/')) {
               if (
                 containAttachment.length > 0 &&
-                containAttachment !== '画像'
+                ['動画', '音声'].includes(containAttachment)
               ) {
                 containAttachment += 'など'
                 break
@@ -149,12 +149,21 @@ export default class ConnectionManager {
             } else if (attachment.contentType.startsWith('video/')) {
               if (
                 containAttachment.length > 0 &&
-                containAttachment !== '動画'
+                ['画像', '音声'].includes(containAttachment)
               ) {
                 containAttachment += 'など'
                 break
               }
               containAttachment = '動画'
+            } else if (attachment.contentType.startsWith('audio/')) {
+              if (
+                containAttachment.length > 0 &&
+                ['画像', '動画'].includes(containAttachment)
+              ) {
+                containAttachment += 'など'
+                break
+              }
+              containAttachment = '音声'
             } else {
               containAttachment = 'その他のもの'
               break
