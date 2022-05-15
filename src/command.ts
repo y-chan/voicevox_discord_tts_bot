@@ -111,6 +111,35 @@ export function createCommandList(
       },
     },
     {
+      name: 'vspeed',
+      description:
+        '話速を設定できます。話速を入力しなかった場合は、今の話速を表示します。',
+      options: [
+        {
+          name: 'value',
+          type: 'INTEGER' as const,
+          description: '話速を入力してください。ただし、範囲は50から200です。',
+          required: false,
+        },
+      ],
+      async execute(interaction, connectionManager) {
+        if (connectionManager === false) return
+        const value = interaction.options.get('value')?.value
+        if (value) {
+          await client.textToSpeechBot.setSpeakSpeed(
+            connectionManager,
+            interaction,
+            value as string
+          )
+        } else {
+          await client.textToSpeechBot.getSpeakSpeed(
+            connectionManager,
+            interaction
+          )
+        }
+      },
+    },
+    {
       name: 'vname',
       description:
         '名前を読み上げるか否かを設定できます。選択しなかった場合、今の設定を表示します。',

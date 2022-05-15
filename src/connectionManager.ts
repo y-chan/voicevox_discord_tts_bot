@@ -40,6 +40,7 @@ export default class ConnectionManager {
     public dbFound: boolean,
     public volume: number,
     public speakerId: number,
+    public speakSpeed: number,
     public name: boolean,
     public calledInteraction: CommandInteraction,
     private textToSpeechBot: TextToSpeechBot
@@ -217,6 +218,7 @@ export default class ConnectionManager {
         text.slice(0, 100) + (text.length > 100 ? '、以下略' : ''),
         this.speakerId
       )
+      audioQuery.speedScale = this.speakSpeed
       // 早口になるのが少しだけマシになる
       audioQuery.outputSamplingRate = 48000
       wav = this.textToSpeechBot.engine.synthesis(audioQuery, this.speakerId)

@@ -15,12 +15,13 @@ export interface GuildSettingModelAttributes {
   volume: number
   name: boolean
   speakerId: number
+  speakSpeed: number
 }
 
 export interface GuildSettingCreationAttributes
   extends Optional<
     Omit<GuildSettingModelAttributes, '_id'>,
-    'volume' | 'name' | 'speakerId'
+    'volume' | 'name' | 'speakerId' | 'speakSpeed'
   > {}
 
 @Table({
@@ -52,6 +53,10 @@ class GuildSetting extends Model<
   @Default(0)
   @Column(DataType.INTEGER)
   speakerId!: number
+
+  @Default(1.0)
+  @Column(DataType.FLOAT)
+  speakSpeed!: number
 }
 
 export default GuildSetting

@@ -87,6 +87,7 @@ export const speakerList: ApplicationCommandOptionChoice[] = [
 export default class TextToSpeechBot extends EventEmitter {
   public defaultVolume = 0.5
   public defaultSpeakerId = 0
+  public defaultSpeakSpeed = 1.0
   public defaultName = true
   public engine: Engine
 
@@ -165,10 +166,12 @@ export default class TextToSpeechBot extends EventEmitter {
         const dbFound = !!guildSetting
         let volume = this.defaultVolume
         let speakerId = this.defaultSpeakerId
+        let speakSpeed = this.defaultSpeakSpeed
         let name = this.defaultName
         if (guildSetting) {
           volume = guildSetting.volume
           speakerId = guildSetting.speakerId
+          speakSpeed = guildSetting.speakSpeed
           name = guildSetting.name
         }
         const connectionManager = new ConnectionManager(
@@ -176,6 +179,7 @@ export default class TextToSpeechBot extends EventEmitter {
           dbFound,
           volume,
           speakerId,
+          speakSpeed,
           name,
           interaction,
           this
@@ -364,6 +368,84 @@ export default class TextToSpeechBot extends EventEmitter {
     await this.sendEmbed(
       interaction,
       `現在の話者は\`${speakerName}\`です。`,
+      undefined,
+      false
+    )
+  }
+
+  async setSpeakSpeed(
+    connectionManager: ConnectionManager | undefined,
+    interaction: CommandInteraction,
+    speakSpeedText: string
+  ): Promise<void> {
+    if (connectionManager === undefined) {
+      await this.sendEmbed(
+        interaction,
+        'Botがボイスチャンネルに接続されていません。',
+        'Botをボイスチャンネルに接続してから再度お試しください。',
+        false
+      )
+      return
+    }
+
+    const speakSpeed = parseInt(speakSpeedText)
+    if (isNaN(speakSpeed)) {
+      await this.sendEmbed(
+        interaction,
+        '話速の設定に失敗しました。',
+        '話速を設定しようとしましたが、入力されたものは数字ではないようです...\n0.5から2で設定してください。',
+        false
+      )
+      return
+    }
+    if (speakSpeed < 50 || 200 < speakSpeed) {
+      await this.sendEmbed(
+        interaction,
+        '話速の設定に失敗しました。',
+        '話速は50から200で設定してください。',
+        false
+      )
+    }
+
+    connectionManager.speakSpeed = speakSpeed / 100
+    const values = { speakSpeed: speakSpeed / 100 }
+    if (connectionManager.dbFound) {
+      await GuildSetting.update(values, {
+        where: { guildId: connectionManager.connection.joinConfig.guildId },
+      })
+    } else {
+      await GuildSetting.create({
+        guildId: connectionManager.connection.joinConfig.guildId,
+        ...values,
+      })
+      connectionManager.dbFound = true
+    }
+
+    await this.sendEmbed(
+      interaction,
+      `話速を${speakSpeed}%に設定しました！`,
+      undefined,
+      false
+    )
+  }
+
+  async getSpeakSpeed(
+    connectionManager: ConnectionManager | undefined,
+    interaction: CommandInteraction
+  ): Promise<void> {
+    if (connectionManager === undefined) {
+      await this.sendEmbed(
+        interaction,
+        'Botがボイスチャンネルに接続されていません。',
+        'Botをボイスチャンネルに接続してから再度お試しください。',
+        false
+      )
+      return
+    }
+
+    await this.sendEmbed(
+      interaction,
+      `現在の話速は${connectionManager.speakSpeed * 100}%です。`,
       undefined,
       false
     )
