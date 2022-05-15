@@ -82,6 +82,26 @@ export const speakerList: ApplicationCommandOptionChoice[] = [
     name: '冥鳴ひまり',
     value: 14,
   },
+  {
+    name: '九州そら(ノーマル)',
+    value: 16,
+  },
+  {
+    name: '九州そら(あまあま)',
+    value: 15,
+  },
+  {
+    name: '九州そら(セクシー)',
+    value: 17,
+  },
+  {
+    name: '九州そら(ツンツン)',
+    value: 18,
+  },
+  {
+    name: '九州そら(ささやき)',
+    value: 19,
+  },
 ]
 
 export default class TextToSpeechBot extends EventEmitter {
