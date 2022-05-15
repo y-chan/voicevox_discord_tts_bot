@@ -70,15 +70,15 @@ export const speakerList: ApplicationCommandOptionChoice[] = [
     name: '玄野武宏',
     value: 11,
   },
-    {
+  {
     name: '白上虎太郎',
     value: 12,
   },
-    {
+  {
     name: '青山龍星',
     value: 13,
   },
-    {
+  {
     name: '冥鳴ひまり',
     value: 14,
   },
