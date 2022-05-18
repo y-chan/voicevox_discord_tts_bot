@@ -19,7 +19,7 @@
     "discord.js": "^13.2.0",
     "ffmpeg-static": "^4.4.0",
     "node-gyp": "^8.3.0",
-    "node-voicevox-engine": "^0.1.5",
+    "node-voicevox-engine": "^0.1.7",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.7.0",
     "sequelize-typescript": "^2.1.1",
