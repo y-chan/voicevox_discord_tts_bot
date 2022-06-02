@@ -5,7 +5,7 @@ import {
   VoiceConnectionStatus,
 } from '@discordjs/voice'
 import {
-  ApplicationCommandOptionChoice,
+  ApplicationCommandOptionChoiceData,
   ClientUser,
   CommandInteraction,
   GuildMember,
@@ -21,7 +21,7 @@ import Client from '@/src/client'
 import ConnectionManager from '@/src/connectionManager'
 import { sendReply, sleep } from '@/src/util'
 
-export const speakerList: ApplicationCommandOptionChoice[] = [
+export const speakerList: ApplicationCommandOptionChoiceData[] = [
   {
     name: '四国めたん(ノーマル)',
     value: 2,

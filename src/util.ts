@@ -1,13 +1,13 @@
 import {
   CommandInteraction,
   Message,
-  MessageOptions,
+  WebhookEditMessageOptions,
   MessagePayload,
 } from 'discord.js'
 
 export async function sendReply(
   interaction: CommandInteraction,
-  options: string | MessagePayload | MessageOptions
+  options: string | MessagePayload | WebhookEditMessageOptions
 ): Promise<Message> {
   let result: Message
   if (interaction.replied && interaction.channel) {
