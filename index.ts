@@ -35,12 +35,16 @@ client.on('messageCreate', async (message) => {
 
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isCommand()) return
-  await interaction.deferReply()
-  const command = client.commandList.find(
-    (v) => v.name === interaction.commandName
-  ) as CustomApplicationCommandData
-  const connectionManager = await getConnectionManager(interaction, client)
-  await command.execute(interaction, connectionManager)
+  try {
+    await interaction.deferReply()
+    const command = client.commandList.find(
+      (v) => v.name === interaction.commandName
+    ) as CustomApplicationCommandData
+    const connectionManager = await getConnectionManager(interaction, client)
+    await command.execute(interaction, connectionManager)
+  } catch(e) {
+    console.log(e)
+  }
 })
 
 client.on('voiceStateUpdate', async (oldState, newState) => {
