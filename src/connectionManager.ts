@@ -135,7 +135,7 @@ export default class ConnectionManager {
   async readText(message?: Message): Promise<void> {
     if (message) {
       // ";"または"；"で始まる文章は読み上げ無視
-      if (message.cleanContent[0] === ";" || message.cleanContent[0] === "；") {
+      if (message.cleanContent[0] === ';' || message.cleanContent[0] === '；') {
         return
       }
       let containAttachment: string = ''
