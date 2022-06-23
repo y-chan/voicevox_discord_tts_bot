@@ -102,6 +102,10 @@ export const speakerList: ApplicationCommandOptionChoiceData[] = [
     name: '九州そら(ささやき)',
     value: 19,
   },
+  {
+    name: 'もち子さん',
+    value: 20,
+  },
 ]
 
 export default class TextToSpeechBot extends EventEmitter {
