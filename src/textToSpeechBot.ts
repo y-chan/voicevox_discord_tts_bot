@@ -14,12 +14,19 @@ import {
   Snowflake,
 } from 'discord.js'
 import EventEmitter from 'events'
-import Engine from 'node-voicevox-engine'
+import Engine, { AccentPhrase } from 'node-voicevox-engine'
 
 import GuildSetting from '@/model/guildSetting'
 import Client from '@/src/client'
 import ConnectionManager from '@/src/connectionManager'
-import { sendReply, sleep } from '@/src/util'
+import {
+  convertHankakuToZenkaku,
+  convertHiraToKana,
+  convertLongVowel,
+  kanaRegex,
+  sendReply,
+  sleep,
+} from '@/src/util'
 
 export const speakerList: ApplicationCommandOptionChoiceData[] = [
   {
@@ -105,6 +112,29 @@ export const speakerList: ApplicationCommandOptionChoiceData[] = [
   {
     name: 'もち子さん',
     value: 20,
+  },
+]
+
+export const priorityList: ApplicationCommandOptionChoiceData[] = [
+  {
+    name: '最低',
+    value: 0,
+  },
+  {
+    name: '低',
+    value: 2,
+  },
+  {
+    name: '標準',
+    value: 5,
+  },
+  {
+    name: '高',
+    value: 8,
+  },
+  {
+    name: '最高',
+    value: 10,
   },
 ]
 
@@ -532,5 +562,171 @@ export default class TextToSpeechBot extends EventEmitter {
       undefined,
       false
     )
+  }
+
+  async getWords(interaction: CommandInteraction): Promise<void> {
+    const words = this.engine.get_user_dict_words()
+    const bot = this.client.user as ClientUser
+    const embeds: MessageEmbed[] = []
+    let counter = 0
+    let embed = new MessageEmbed().setTitle('単語一覧')
+    for (const [_, word] of Object.entries(words)) {
+      if (counter !== 0 && counter % 9 == 0) {
+        embeds.push(embed)
+        embed = new MessageEmbed()
+      }
+      let accentStr = ''
+      for (let i = 0; i < word.mora_count!; i++) {
+        if (i === word.accent_type - 1) {
+          accentStr += '＼'
+        } else if (i === 0) {
+          accentStr += '／'
+        } else if (i > word.accent_type - 1) {
+          accentStr += '＿'
+        } else {
+          accentStr += '￣'
+        }
+      }
+      let priorityStr = '優先度: '
+      priorityStr += priorityList.find(
+        (value) => value.value === word.priority
+      )!.name
+      embed.addField(
+        word.surface,
+        `${word.yomi}\n${accentStr}\n${priorityStr}`,
+        true
+      )
+      counter++
+    }
+    await sendReply(interaction, { embeds })
+  }
+
+  async registerWord(
+    interaction: CommandInteraction,
+    surface: string,
+    yomi: string,
+    priority: number | null
+  ): Promise<void> {
+    const words = this.engine.get_user_dict_words()
+    let foundUuid: string | undefined
+    for (const [wordUuid, word] of Object.entries(words)) {
+      if (convertHankakuToZenkaku(surface) == word.surface) {
+        foundUuid = wordUuid
+        break
+      }
+    }
+    // AquesTalkライク記法によるアクセント指定を可能にする
+    yomi = yomi.replace('’', "'")
+    const accentMatch = yomi.match(/'/g)
+    if (accentMatch !== null) {
+      if (accentMatch.length !== 1) {
+        await this.sendEmbed(
+          interaction,
+          'アクセントが2つ以上存在します。アクセントは1つだけ指定してください。',
+          undefined,
+          false
+        )
+        return
+      }
+    } else {
+      yomi += "'"
+    }
+    yomi = convertHiraToKana(yomi)
+    const pronunciation = yomi.replace("'", '')
+    if (!kanaRegex.test(pronunciation)) {
+      await this.sendEmbed(
+        interaction,
+        "読みに使えない文字が含まれています。読みに使えるのはひらがなとカタカナ、アクセント用の「'」(シングルクオーテーション)のみです",
+        undefined,
+        false
+      )
+      return
+    }
+
+    let accentPhrase: AccentPhrase[]
+    try {
+      accentPhrase = this.engine.accent_phrases(convertLongVowel(yomi), 0, true)
+    } catch (e) {
+      console.log(e, yomi)
+      await this.sendEmbed(
+        interaction,
+        '読みの文字列が間違っています。例えば、文字列の先頭にアクセントをつけることは出来ません。',
+        undefined,
+        false
+      )
+      return
+    }
+    const accentType = accentPhrase[0].accent
+
+    try {
+      if (foundUuid) {
+        this.engine.rewrite_user_dict_word(
+          surface,
+          pronunciation,
+          accentType,
+          foundUuid,
+          undefined,
+          priority === null ? 5 : priority
+        )
+      } else {
+        this.engine.add_user_dict_word(
+          surface,
+          pronunciation,
+          accentType,
+          undefined,
+          priority === null ? 5 : priority
+        )
+      }
+    } catch (e) {
+      await this.sendEmbed(
+        interaction,
+        'エラーが発生しました...',
+        undefined,
+        false
+      )
+      console.log(e)
+      return
+    }
+
+    await this.sendEmbed(
+      interaction,
+      `${surface}(${yomi})を${foundUuid ? '更新' : '登録'}しました。`,
+      undefined,
+      false
+    )
+    return
+  }
+
+  async deleteWord(
+    interaction: CommandInteraction,
+    surface: string
+  ): Promise<void> {
+    const words = this.engine.get_user_dict_words()
+    let foundUuid: string | undefined
+    for (const [wordUuid, word] of Object.entries(words)) {
+      if (convertHankakuToZenkaku(surface) == word.surface) {
+        foundUuid = wordUuid
+        break
+      }
+    }
+    if (foundUuid) {
+      this.engine.delete_user_dict_word(foundUuid)
+    } else {
+      await this.sendEmbed(
+        interaction,
+        '削除したい単語が見つかりませんでした。',
+        undefined,
+        false
+      )
+      return
+    }
+
+    await this.sendEmbed(
+      interaction,
+      `${surface}を削除しました。`,
+      undefined,
+      false
+    )
+    return
   }
 }

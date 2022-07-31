@@ -7,7 +7,10 @@ import {
 
 import Client from '@/src/client'
 import ConnectionManager from '@/src/connectionManager'
-import TextToSpeechBot, { speakerList } from '@/src/textToSpeechBot'
+import TextToSpeechBot, {
+  priorityList,
+  speakerList,
+} from '@/src/textToSpeechBot'
 
 export type CustomApplicationCommandData = ApplicationCommandData & {
   execute: (
@@ -165,6 +168,95 @@ export function createCommandList(
             connectionManager,
             interaction
           )
+        }
+      },
+    },
+    {
+      name: 'vdict',
+      description: '単語の読み上げ方を指定する辞書を操作出来ます。',
+      options: [
+        {
+          name: 'show',
+          type: 'SUB_COMMAND' as const,
+          description: '現在登録されている単語一覧を表示します。',
+        },
+        {
+          name: 'register',
+          type: 'SUB_COMMAND' as const,
+          description: '新しく単語を登録するか、更新します。',
+          options: [
+            {
+              name: 'surface',
+              type: 'STRING' as const,
+              description: '単語を入力してください。',
+              required: true,
+            },
+            {
+              name: 'yomi',
+              type: 'STRING' as const,
+              description: '読みを入力してください。',
+              required: true,
+            },
+            {
+              name: 'priority',
+              type: 'INTEGER' as const,
+              description:
+                '優先度を選択してください(単語が反映されないと感じた場合など)。',
+              required: false,
+              choices: priorityList,
+            },
+          ],
+        },
+        {
+          name: 'delete',
+          type: 'SUB_COMMAND' as const,
+          description: '単語を削除します。',
+          options: [
+            {
+              name: 'surface',
+              type: 'STRING' as const,
+              description: '単語を入力してください。',
+              required: true,
+            },
+          ],
+        },
+      ],
+      async execute(interaction, _) {
+        const subCommand = interaction.options.getSubcommand()
+        if (subCommand === 'show') {
+          await client.textToSpeechBot.getWords(interaction)
+        } else if (subCommand === 'register') {
+          const surface = interaction.options.getString('surface')
+          const yomi = interaction.options.getString('yomi')
+          const priority = interaction.options.getInteger('priority')
+          if (!surface || !yomi) {
+            await interaction.reply({
+              ephemeral: true,
+              content: '単語もしくは読みの入力が不正です',
+            })
+            return
+          }
+          await client.textToSpeechBot.registerWord(
+            interaction,
+            surface,
+            yomi,
+            priority
+          )
+        } else if (subCommand === 'delete') {
+          const surface = interaction.options.getString('surface')
+          if (!surface) {
+            await interaction.reply({
+              ephemeral: true,
+              content: '単語の入力が不正です',
+            })
+            return
+          }
+          await client.textToSpeechBot.deleteWord(interaction, surface)
+        } else {
+          await interaction.reply({
+            ephemeral: true,
+            content: 'コマンドが不正です',
+          })
         }
       },
     },

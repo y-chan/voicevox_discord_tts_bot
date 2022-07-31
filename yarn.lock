@@ -1858,10 +1858,10 @@ node-pre-gyp@^0.11.0:
     semver "^5.3.0"
     tar "^4"
 
-node-voicevox-engine@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/node-voicevox-engine/-/node-voicevox-engine-0.1.7.tgz#4896d5f8c3c313c80c25249f6fd9e3773686f09c"
-  integrity sha512-GOLK+UTB52eQExfstqft+zyt9yNwylNKcRCl1dQmADK12bGIgfxBv8mYyoWWGW08XkWSt8H1H2SI1r2nTBaT5Q==
+node-voicevox-engine@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/node-voicevox-engine/-/node-voicevox-engine-0.2.2.tgz#9b6dab0350adf1cbc698291168811e5f94465b02"
+  integrity sha512-YRiZ/k9rumLNjyk9Tt3Qc48a1ndGgeW+LiS5hPXYFGW2wxNBFp4yggChhSFNhfCEkSkwPy2Gm492nqzlQypxng==
   dependencies:
     bindings "^1.5.0"
     node-addon-api "^4.1.0"
