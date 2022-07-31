@@ -62,6 +62,10 @@ export const speakerList: ApplicationCommandOptionChoiceData[] = [
     value: 7,
   },
   {
+    name: 'ずんだもん(ささやき)',
+    value: 22,
+  },
+  {
     name: '春日部つむぎ',
     value: 8,
   },
@@ -112,6 +116,10 @@ export const speakerList: ApplicationCommandOptionChoiceData[] = [
   {
     name: 'もち子さん',
     value: 20,
+  },
+  {
+    name: '剣崎雌雄',
+    value: 21,
   },
 ]
 
