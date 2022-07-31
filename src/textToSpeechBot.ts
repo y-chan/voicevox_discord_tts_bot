@@ -606,6 +606,7 @@ export default class TextToSpeechBot extends EventEmitter {
       )
       counter++
     }
+    embeds.push(embed)
     await sendReply(interaction, { embeds })
   }
 
