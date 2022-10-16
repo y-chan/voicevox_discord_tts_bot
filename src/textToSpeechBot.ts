@@ -82,8 +82,24 @@ export const speakerList: ApplicationCommandOptionChoiceData[] = [
     value: 11,
   },
   {
-    name: '白上虎太郎',
+    name: '白上虎太郎(ふつう)',
     value: 12,
+  },
+  {
+    name: '白上虎太郎(わーい)',
+    value: 32,
+  },
+  {
+    name: '白上虎太郎(びくびく)',
+    value: 33,
+  },
+  {
+    name: '白上虎太郎(おこ)',
+    value: 34,
+  },
+  {
+    name: '白上虎太郎(びえーん)',
+    value: 35,
   },
   {
     name: '青山龍星',
@@ -120,6 +136,42 @@ export const speakerList: ApplicationCommandOptionChoiceData[] = [
   {
     name: '剣崎雌雄',
     value: 21,
+  },
+  {
+    name: 'WhiteCUL(ノーマル)',
+    value: 23,
+  },
+  {
+    name: 'WhiteCUL(たのしい)',
+    value: 24,
+  },
+  {
+    name: 'WhiteCUL(かなしい)',
+    value: 25,
+  },
+  {
+    name: 'WhiteCUL(びえーん)',
+    value: 26,
+  },
+  {
+    name: '後鬼(人間ver.)',
+    value: 27,
+  },
+  {
+    name: '後鬼(ぬいぐるみver.)',
+    value: 28,
+  },
+  {
+    name: 'No.7(ノーマル)',
+    value: 29,
+  },
+  {
+    name: 'No.7(アナウンス)',
+    value: 30,
+  },
+  {
+    name: 'No.7(読み聞かせ)',
+    value: 31,
   },
 ]
 
