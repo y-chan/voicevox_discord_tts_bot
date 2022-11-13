@@ -46,6 +46,14 @@ export const speakerList0: ApplicationCommandOptionChoiceData[] = [
     value: 6,
   },
   {
+    name: '四国めたん(ささやき)',
+    value: 36,
+  },
+  {
+    name: '四国めたん(ヒソヒソ)',
+    value: 37,
+  },
+  {
     name: 'ずんだもん(ノーマル)',
     value: 3,
   },
@@ -64,6 +72,10 @@ export const speakerList0: ApplicationCommandOptionChoiceData[] = [
   {
     name: 'ずんだもん(ささやき)',
     value: 22,
+  },
+  {
+    name: 'ずんだもん(ヒソヒソ)',
+    value: 38,
   },
   {
     name: '春日部つむぎ',
