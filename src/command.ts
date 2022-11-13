@@ -9,7 +9,8 @@ import Client from '@/src/client'
 import ConnectionManager from '@/src/connectionManager'
 import TextToSpeechBot, {
   priorityList,
-  speakerList,
+  speakerList0,
+  speakerList1,
 } from '@/src/textToSpeechBot'
 
 export type CustomApplicationCommandData = ApplicationCommandData & {
@@ -86,20 +87,34 @@ export function createCommandList(
     {
       name: 'vspeaker',
       description:
-        '話者を設定できます。話者を選択しなかった場合は、今の話者を表示します。',
+        '話者を設定できます。話者を選択しなかった場合は、今の話者を表示します。話者リスト2が優先されます。',
       options: [
         {
           name: 'speaker',
           type: 'INTEGER' as const,
-          description: '話者を選択してください。',
+          description: '話者を選択してください(話者リスト1)。',
           required: false,
-          choices: speakerList,
+          choices: speakerList0,
+        },
+        {
+          name: 'speaker1',
+          type: 'INTEGER' as const,
+          description: '話者を選択してください(話者リスト2)。',
+          required: false,
+          choices: speakerList1,
         },
       ],
       async execute(interaction, connectionManager) {
         if (connectionManager === false) return
         const speaker = interaction.options.get('speaker')?.value
-        if (speaker !== undefined) {
+        const speaker1 = interaction.options.get('speaker1')?.value
+        if (speaker1 !== undefined) {
+          await client.textToSpeechBot.setSpeakerId(
+            connectionManager,
+            interaction,
+            speaker1 as number
+          )
+        } else if (speaker !== undefined) {
           await client.textToSpeechBot.setSpeakerId(
             connectionManager,
             interaction,

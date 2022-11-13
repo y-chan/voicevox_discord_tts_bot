@@ -28,7 +28,7 @@ import {
   sleep,
 } from '@/src/util'
 
-export const speakerList: ApplicationCommandOptionChoiceData[] = [
+export const speakerList0: ApplicationCommandOptionChoiceData[] = [
   {
     name: '四国めたん(ノーマル)',
     value: 2,
@@ -109,6 +109,9 @@ export const speakerList: ApplicationCommandOptionChoiceData[] = [
     name: '冥鳴ひまり',
     value: 14,
   },
+]
+
+export const speakerList1: ApplicationCommandOptionChoiceData[] = [
   {
     name: '九州そら(ノーマル)',
     value: 16,
@@ -451,9 +454,16 @@ export default class TextToSpeechBot extends EventEmitter {
       connectionManager.dbFound = true
     }
 
-    const speakerName = speakerList.find(
+    let speaker = speakerList0.find(
       (value) => value.value === speakerId
-    )!.name
+    )
+    if (!speaker) {
+      speaker = speakerList1.find(
+        (value) => value.value === speakerId
+      )
+    }
+    const speakerName = speaker!.name
+
     await this.sendEmbed(
       interaction,
       `話者を\`${speakerName}\`に設定しました！`,
@@ -476,9 +486,15 @@ export default class TextToSpeechBot extends EventEmitter {
       return
     }
 
-    const speakerName = speakerList.find(
+    let speaker = speakerList0.find(
       (value) => value.value === connectionManager.speakerId
-    )!.name
+    )
+    if (!speaker) {
+      speaker = speakerList1.find(
+        (value) => value.value === connectionManager.speakerId
+      )
+    }
+    const speakerName = speaker!.name
     await this.sendEmbed(
       interaction,
       `現在の話者は\`${speakerName}\`です。`,
