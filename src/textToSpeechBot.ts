@@ -239,7 +239,7 @@ export default class TextToSpeechBot extends EventEmitter {
       .setTitle(title)
       .setAuthor({
         name: bot.username,
-        url: bot.avatarURL() || '',
+        url: bot.avatarURL() || undefined,
       })
       .setFooter({
         text: 'Powered by VOICEVOX',
