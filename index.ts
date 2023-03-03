@@ -10,7 +10,7 @@ import '@/src/db'
 import {
   ActivityType,
   GuildMember,
-  IntentsBitField,
+  GatewayIntentBits,
   VoiceChannel,
 } from 'discord.js'
 
@@ -22,14 +22,14 @@ import {
   getConnectionManager,
 } from '@/src/command'
 
-const Intents = IntentsBitField.Flags
 const client = new Client({
   intents: [
-    Intents.Guilds,
-    Intents.GuildMessages,
-    Intents.GuildMembers,
-    Intents.GuildVoiceStates,
-    Intents.GuildIntegrations,
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildIntegrations,
   ],
 })
 
