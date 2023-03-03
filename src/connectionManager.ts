@@ -70,7 +70,18 @@ export default class ConnectionManager {
         await this.readText()
       }
     })
-    this.connection.on('stateChange', async (_, newState) => {
+    this.connection.on('stateChange', async (oldState, newState) => {
+      const oldNetworking = Reflect.get(oldState, 'networking');
+      const newNetworking = Reflect.get(newState, 'networking');
+
+      const networkStateChangeHandler = (_: any, newNetworkState: any) => {
+        const newUdp = Reflect.get(newNetworkState, 'udp');
+        clearInterval(newUdp?.keepAliveInterval);
+      };
+
+      oldNetworking?.off('stateChange', networkStateChangeHandler);
+      newNetworking?.on('stateChange', networkStateChangeHandler);
+
       if (newState.status === VoiceConnectionStatus.Disconnected) {
         if (
           newState.reason === VoiceConnectionDisconnectReason.WebSocketClose &&
