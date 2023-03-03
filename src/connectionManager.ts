@@ -115,16 +115,22 @@ export default class ConnectionManager {
         }
       }
 
-      const oldNetworking = Reflect.get(oldState, 'networking');
-      const newNetworking = Reflect.get(newState, 'networking');
+      if (
+        oldState.status === VoiceConnectionStatus.Ready &&
+        newState.status === VoiceConnectionStatus.Connecting
+      ) {
+        connection.configureNetworking()
+      }
+      const oldNetworking = Reflect.get(oldState, 'networking')
+      const newNetworking = Reflect.get(newState, 'networking')
 
       const networkStateChangeHandler = (_: any, newNetworkState: any) => {
-        const newUdp = Reflect.get(newNetworkState, 'udp');
-        clearInterval(newUdp?.keepAliveInterval);
-      };
+        const newUdp = Reflect.get(newNetworkState, 'udp')
+        clearInterval(newUdp?.keepAliveInterval)
+      }
 
-      oldNetworking?.off('stateChange', networkStateChangeHandler);
-      newNetworking?.on('stateChange', networkStateChangeHandler);
+      oldNetworking?.off('stateChange', networkStateChangeHandler)
+      newNetworking?.on('stateChange', networkStateChangeHandler)
     })
   }
 
