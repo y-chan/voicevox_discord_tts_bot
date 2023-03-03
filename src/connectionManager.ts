@@ -9,7 +9,7 @@ import {
   VoiceConnectionDisconnectReason,
   VoiceConnectionStatus,
 } from '@discordjs/voice'
-import { CommandInteraction, Message } from 'discord.js'
+import { ChatInputCommandInteraction, Message } from 'discord.js'
 import { Readable } from 'stream'
 
 import TextToSpeechBot from '@/src/textToSpeechBot'
@@ -42,7 +42,7 @@ export default class ConnectionManager {
     public speakerId: number,
     public speakSpeed: number,
     public name: boolean,
-    public calledInteraction: CommandInteraction,
+    public calledInteraction: ChatInputCommandInteraction,
     private textToSpeechBot: TextToSpeechBot
   ) {
     this.player.on('stateChange', async (oldState, newState) => {

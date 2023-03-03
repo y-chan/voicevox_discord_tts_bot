@@ -6,11 +6,11 @@ import {
 } from '@discordjs/voice'
 import {
   ApplicationCommandOptionChoiceData,
+  ChatInputCommandInteraction,
   ClientUser,
-  CommandInteraction,
+  EmbedBuilder,
   GuildMember,
   Message,
-  MessageEmbed,
   Snowflake,
 } from 'discord.js'
 import EventEmitter from 'events'
@@ -28,7 +28,7 @@ import {
   sleep,
 } from '@/src/util'
 
-export const speakerList0: ApplicationCommandOptionChoiceData[] = [
+export const speakerList0: ApplicationCommandOptionChoiceData<number>[] = [
   {
     name: '四国めたん(ノーマル)',
     value: 2,
@@ -123,7 +123,7 @@ export const speakerList0: ApplicationCommandOptionChoiceData[] = [
   },
 ]
 
-export const speakerList1: ApplicationCommandOptionChoiceData[] = [
+export const speakerList1: ApplicationCommandOptionChoiceData<number>[] = [
   {
     name: '九州そら(ノーマル)',
     value: 16,
@@ -190,7 +190,7 @@ export const speakerList1: ApplicationCommandOptionChoiceData[] = [
   },
 ]
 
-export const priorityList: ApplicationCommandOptionChoiceData[] = [
+export const priorityList: ApplicationCommandOptionChoiceData<number>[] = [
   {
     name: '最低',
     value: 0,
@@ -229,24 +229,31 @@ export default class TextToSpeechBot extends EventEmitter {
   }
 
   async sendEmbed(
-    interaction: CommandInteraction,
+    interaction: ChatInputCommandInteraction,
     title: string,
     description?: string,
     license: boolean = true
   ): Promise<void> {
     const bot = this.client.user as ClientUser
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle(title)
-      .setAuthor(bot.username, bot.avatarURL() || '')
-      .setFooter('Powered by VOICEVOX')
+      .setAuthor({
+        name: bot.username,
+        url: bot.avatarURL() || '',
+      })
+      .setFooter({
+        text: 'Powered by VOICEVOX',
+        iconURL: 'https://avatars.githubusercontent.com/u/95246571',
+      })
     if (description) embed.setDescription(description)
     if (license) {
-      embed.addField(
-        'ライセンス事項',
-        '本BotのTTS機能は、ヒホ氏によって公開されている音声合成アプリケーションVOICEVOXの音声合成エンジンを利用しています。' +
+      embed.addFields({
+        name: 'ライセンス事項',
+        value:
+          '本BotのTTS機能は、ヒホ氏によって公開されている音声合成アプリケーションVOICEVOXの音声合成エンジンを利用しています。' +
           'YouTubeでのライブ配信等の際にこのBotを利用する場合は「VOICEVOX:四国めたん」や「VOICEVOX:ずんだもん」などの表記が必要となりますのでご注意ください。' +
-          'また、TTSにおける文字列の解析等において、MeCab、NAIST Japanese Dictionary及びそれらを内包するOpenJTalkを用いています。'
-      )
+          'また、TTSにおける文字列の解析等において、MeCab、NAIST Japanese Dictionary及びそれらを内包するOpenJTalkを用いています。',
+      })
     }
     await sendReply(interaction, { embeds: [embed] })
   }
@@ -264,7 +271,7 @@ export default class TextToSpeechBot extends EventEmitter {
 
   async ttsModeOn(
     connectionManager: ConnectionManager | undefined,
-    interaction: CommandInteraction
+    interaction: ChatInputCommandInteraction
   ): Promise<void> {
     if (connectionManager) {
       await this.sendEmbed(
@@ -339,7 +346,7 @@ export default class TextToSpeechBot extends EventEmitter {
 
   async ttsModeOff(
     connectionManager: ConnectionManager | undefined,
-    interaction?: CommandInteraction
+    interaction?: ChatInputCommandInteraction
   ): Promise<void> {
     if (connectionManager) {
       if (interaction) connectionManager.calledInteraction = interaction
@@ -361,7 +368,7 @@ export default class TextToSpeechBot extends EventEmitter {
 
   async setVolume(
     connectionManager: ConnectionManager | undefined,
-    interaction: CommandInteraction,
+    interaction: ChatInputCommandInteraction,
     volumeText: string
   ): Promise<void> {
     if (connectionManager === undefined) {
@@ -418,7 +425,7 @@ export default class TextToSpeechBot extends EventEmitter {
 
   async getVolume(
     connectionManager: ConnectionManager | undefined,
-    interaction: CommandInteraction
+    interaction: ChatInputCommandInteraction
   ): Promise<void> {
     if (connectionManager === undefined) {
       await this.sendEmbed(
@@ -439,7 +446,7 @@ export default class TextToSpeechBot extends EventEmitter {
 
   async setSpeakerId(
     connectionManager: ConnectionManager | undefined,
-    interaction: CommandInteraction,
+    interaction: ChatInputCommandInteraction,
     speakerId: number
   ): Promise<void> {
     if (connectionManager === undefined) {
@@ -466,13 +473,9 @@ export default class TextToSpeechBot extends EventEmitter {
       connectionManager.dbFound = true
     }
 
-    let speaker = speakerList0.find(
-      (value) => value.value === speakerId
-    )
+    let speaker = speakerList0.find((value) => value.value === speakerId)
     if (!speaker) {
-      speaker = speakerList1.find(
-        (value) => value.value === speakerId
-      )
+      speaker = speakerList1.find((value) => value.value === speakerId)
     }
     const speakerName = speaker!.name
 
@@ -486,7 +489,7 @@ export default class TextToSpeechBot extends EventEmitter {
 
   async getSpeakerId(
     connectionManager: ConnectionManager | undefined,
-    interaction: CommandInteraction
+    interaction: ChatInputCommandInteraction
   ): Promise<void> {
     if (connectionManager === undefined) {
       await this.sendEmbed(
@@ -517,7 +520,7 @@ export default class TextToSpeechBot extends EventEmitter {
 
   async setSpeakSpeed(
     connectionManager: ConnectionManager | undefined,
-    interaction: CommandInteraction,
+    interaction: ChatInputCommandInteraction,
     speakSpeedText: string
   ): Promise<void> {
     if (connectionManager === undefined) {
@@ -573,7 +576,7 @@ export default class TextToSpeechBot extends EventEmitter {
 
   async getSpeakSpeed(
     connectionManager: ConnectionManager | undefined,
-    interaction: CommandInteraction
+    interaction: ChatInputCommandInteraction
   ): Promise<void> {
     if (connectionManager === undefined) {
       await this.sendEmbed(
@@ -595,7 +598,7 @@ export default class TextToSpeechBot extends EventEmitter {
 
   async setReadName(
     connectionManager: ConnectionManager | undefined,
-    interaction: CommandInteraction,
+    interaction: ChatInputCommandInteraction,
     name: boolean
   ): Promise<void> {
     if (connectionManager === undefined) {
@@ -632,7 +635,7 @@ export default class TextToSpeechBot extends EventEmitter {
 
   async getReadName(
     connectionManager: ConnectionManager | undefined,
-    interaction: CommandInteraction
+    interaction: ChatInputCommandInteraction
   ): Promise<void> {
     if (connectionManager === undefined) {
       await this.sendEmbed(
@@ -652,16 +655,16 @@ export default class TextToSpeechBot extends EventEmitter {
     )
   }
 
-  async getWords(interaction: CommandInteraction): Promise<void> {
+  async getWords(interaction: ChatInputCommandInteraction): Promise<void> {
     const words = this.engine.get_user_dict_words()
     const bot = this.client.user as ClientUser
-    const embeds: MessageEmbed[] = []
+    const embeds: EmbedBuilder[] = []
     let counter = 0
-    let embed = new MessageEmbed().setTitle('単語一覧')
+    let embed = new EmbedBuilder().setTitle('単語一覧')
     for (const [_, word] of Object.entries(words)) {
       if (counter !== 0 && counter % 9 == 0) {
         embeds.push(embed)
-        embed = new MessageEmbed()
+        embed = new EmbedBuilder()
       }
       let accentStr = ''
       for (let i = 0; i < word.mora_count!; i++) {
@@ -679,11 +682,11 @@ export default class TextToSpeechBot extends EventEmitter {
       priorityStr += priorityList.find(
         (value) => value.value === word.priority
       )!.name
-      embed.addField(
-        word.surface,
-        `${word.yomi}\n${accentStr}\n${priorityStr}`,
-        true
-      )
+      embed.addFields({
+        name: word.surface,
+        value: `${word.yomi}\n${accentStr}\n${priorityStr}`,
+        inline: true,
+      })
       counter++
     }
     embeds.push(embed)
@@ -691,7 +694,7 @@ export default class TextToSpeechBot extends EventEmitter {
   }
 
   async registerWord(
-    interaction: CommandInteraction,
+    interaction: ChatInputCommandInteraction,
     surface: string,
     yomi: string,
     priority: number | null
@@ -787,7 +790,7 @@ export default class TextToSpeechBot extends EventEmitter {
   }
 
   async deleteWord(
-    interaction: CommandInteraction,
+    interaction: ChatInputCommandInteraction,
     surface: string
   ): Promise<void> {
     const words = this.engine.get_user_dict_words()

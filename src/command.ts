@@ -1,6 +1,7 @@
 import {
   ApplicationCommandData,
-  CommandInteraction,
+  ApplicationCommandOptionType,
+  ChatInputCommandInteraction,
   Guild,
   GuildMember,
 } from 'discord.js'
@@ -15,13 +16,13 @@ import TextToSpeechBot, {
 
 export type CustomApplicationCommandData = ApplicationCommandData & {
   execute: (
-    interaction: CommandInteraction,
+    interaction: ChatInputCommandInteraction,
     connectionManager: ConnectionManager | undefined | false
   ) => Promise<void>
 }
 
 export async function getConnectionManager(
-  interaction: CommandInteraction,
+  interaction: ChatInputCommandInteraction,
   client: Client
 ): Promise<ConnectionManager | undefined | false> {
   const guildId = interaction.guildId
@@ -65,7 +66,7 @@ export function createCommandList(
       options: [
         {
           name: 'value',
-          type: 'INTEGER' as const,
+          type: ApplicationCommandOptionType.Integer,
           description: '音量を入力してください。ただし、範囲は1から100です。',
           required: false,
         },
@@ -91,14 +92,14 @@ export function createCommandList(
       options: [
         {
           name: 'speaker',
-          type: 'INTEGER' as const,
+          type: ApplicationCommandOptionType.Integer,
           description: '話者を選択してください(話者リスト1)。',
           required: false,
           choices: speakerList0,
         },
         {
           name: 'speaker1',
-          type: 'INTEGER' as const,
+          type: ApplicationCommandOptionType.Integer,
           description: '話者を選択してください(話者リスト2)。',
           required: false,
           choices: speakerList1,
@@ -135,7 +136,7 @@ export function createCommandList(
       options: [
         {
           name: 'value',
-          type: 'INTEGER' as const,
+          type: ApplicationCommandOptionType.Integer,
           description: '話速を入力してください。ただし、範囲は50から200です。',
           required: false,
         },
@@ -164,7 +165,7 @@ export function createCommandList(
       options: [
         {
           name: 'name',
-          type: 'BOOLEAN' as const,
+          type: ApplicationCommandOptionType.Boolean,
           description: '読み上げるか否かを選択してください。',
           required: false,
         },
@@ -192,29 +193,29 @@ export function createCommandList(
       options: [
         {
           name: 'show',
-          type: 'SUB_COMMAND' as const,
+          type: ApplicationCommandOptionType.Subcommand,
           description: '現在登録されている単語一覧を表示します。',
         },
         {
           name: 'register',
-          type: 'SUB_COMMAND' as const,
+          type: ApplicationCommandOptionType.Subcommand,
           description: '新しく単語を登録するか、更新します。',
           options: [
             {
               name: 'surface',
-              type: 'STRING' as const,
+              type: ApplicationCommandOptionType.String,
               description: '単語を入力してください。',
               required: true,
             },
             {
               name: 'yomi',
-              type: 'STRING' as const,
+              type: ApplicationCommandOptionType.String,
               description: '読みを入力してください。',
               required: true,
             },
             {
               name: 'priority',
-              type: 'INTEGER' as const,
+              type: ApplicationCommandOptionType.Integer,
               description:
                 '優先度を選択してください(単語が反映されないと感じた場合など)。',
               required: false,
@@ -224,12 +225,12 @@ export function createCommandList(
         },
         {
           name: 'delete',
-          type: 'SUB_COMMAND' as const,
+          type: ApplicationCommandOptionType.Subcommand,
           description: '単語を削除します。',
           options: [
             {
               name: 'surface',
-              type: 'STRING' as const,
+              type: ApplicationCommandOptionType.String,
               description: '単語を入力してください。',
               required: true,
             },

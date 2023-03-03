@@ -7,7 +7,12 @@ if (
 
 import '@/src/db'
 
-import { Guild, GuildMember, Intents, VoiceChannel } from 'discord.js'
+import {
+  ActivityType,
+  GuildMember,
+  IntentsBitField,
+  VoiceChannel,
+} from 'discord.js'
 
 import GuildSetting from '@/model/guildSetting'
 import packageJson from '@/package.json'
@@ -17,14 +22,14 @@ import {
   getConnectionManager,
 } from '@/src/command'
 
-const INTENTS = Intents.FLAGS
+const Intents = IntentsBitField.Flags
 const client = new Client({
   intents: [
-    INTENTS.GUILDS,
-    INTENTS.GUILD_MESSAGES,
-    INTENTS.GUILD_MEMBERS,
-    INTENTS.GUILD_VOICE_STATES,
-    INTENTS.GUILD_INTEGRATIONS,
+    Intents.Guilds,
+    Intents.GuildMessages,
+    Intents.GuildMembers,
+    Intents.GuildVoiceStates,
+    Intents.GuildIntegrations,
   ],
 })
 
@@ -34,7 +39,7 @@ client.on('messageCreate', async (message) => {
 })
 
 client.on('interactionCreate', async (interaction) => {
-  if (!interaction.isCommand()) return
+  if (!interaction.isChatInputCommand()) return
   try {
     await interaction.deferReply()
     const command = client.commandList.find(
@@ -42,7 +47,7 @@ client.on('interactionCreate', async (interaction) => {
     ) as CustomApplicationCommandData
     const connectionManager = await getConnectionManager(interaction, client)
     await command.execute(interaction, connectionManager)
-  } catch(e) {
+  } catch (e) {
     console.log(e)
   }
 })
@@ -83,7 +88,7 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 client.on('ready', async () => {
   console.log('botを正常に起動しました')
   client.user?.setActivity(`TTS Botだよ！(Ver: ${packageJson.version})`, {
-    type: 'PLAYING',
+    type: ActivityType.Playing,
   })
   await GuildSetting.sync()
   if (!client.application?.owner) await client.application?.fetch()

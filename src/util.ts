@@ -1,19 +1,20 @@
 import {
-  CommandInteraction,
+  ChatInputCommandInteraction,
   Message,
+  MessageCreateOptions,
   MessagePayload,
-  WebhookEditMessageOptions,
+  TextChannel,
 } from 'discord.js'
 
 export async function sendReply(
-  interaction: CommandInteraction,
-  options: string | MessagePayload | WebhookEditMessageOptions
+  interaction: ChatInputCommandInteraction,
+  options: string | MessagePayload | MessageCreateOptions
 ): Promise<Message> {
   let result: Message
   if (interaction.replied && interaction.channel) {
-    result = await interaction.channel.send(options)
+    result = await (interaction.channel as TextChannel).send(options)
   } else {
-    result = (await interaction.editReply(options)) as Message
+    result = await interaction.editReply(options)
   }
   return result
 }
