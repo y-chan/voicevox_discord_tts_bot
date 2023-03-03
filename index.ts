@@ -9,8 +9,8 @@ import '@/src/db'
 
 import {
   ActivityType,
-  GuildMember,
   GatewayIntentBits,
+  GuildMember,
   VoiceChannel,
 } from 'discord.js'
 
