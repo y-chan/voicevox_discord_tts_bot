@@ -16,7 +16,7 @@
     "@discordjs/voice": "^0.14.0",
     "@types/node": "^16.11.0",
     "@types/validator": "^13.6.3",
-    "discord.js": "^14.7.1",
+    "discord.js": "^14.9.0",
     "ffmpeg-static": "^4.4.0",
     "node-gyp": "^8.3.0",
     "node-voicevox-engine": "^0.2.2",
