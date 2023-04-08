@@ -567,6 +567,9 @@ export default class TextToSpeechBot extends EventEmitter {
     let speaker = speakerList0.find((value) => value.value === speakerId)
     if (!speaker) {
       speaker = speakerList1.find((value) => value.value === speakerId)
+      if (!speaker) {
+        speaker = speakerList2.find((value) => value.value === speakerId)
+      }
     }
     const speakerName = speaker!.name
 
@@ -599,6 +602,11 @@ export default class TextToSpeechBot extends EventEmitter {
       speaker = speakerList1.find(
         (value) => value.value === connectionManager.speakerId
       )
+      if (!speaker) {
+        speaker = speakerList2.find(
+          (value) => value.value === connectionManager.speakerId
+        )
+      }
     }
     const speakerName = speaker!.name
     await this.sendEmbed(
