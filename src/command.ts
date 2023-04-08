@@ -104,12 +104,26 @@ export function createCommandList(
           required: false,
           choices: speakerList1,
         },
+        {
+          name: 'speaker2',
+          type: ApplicationCommandOptionType.Integer,
+          description: '話者を選択してください(話者リスト3)。',
+          required: false,
+          choices: speakerList2,
+        },
       ],
       async execute(interaction, connectionManager) {
         if (connectionManager === false) return
         const speaker = interaction.options.get('speaker')?.value
         const speaker1 = interaction.options.get('speaker1')?.value
-        if (speaker1 !== undefined) {
+        const speaker2 = interaction.options.get('speaker2')?.value
+        if (speaker2 !== undefined) {
+          await client.textToSpeechBot.setSpeakerId(
+            connectionManager,
+            interaction,
+            speaker2 as number
+          )
+        } else if (speaker1 !== undefined) {
           await client.textToSpeechBot.setSpeakerId(
             connectionManager,
             interaction,

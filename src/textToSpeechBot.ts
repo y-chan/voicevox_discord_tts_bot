@@ -90,8 +90,20 @@ export const speakerList0: ApplicationCommandOptionChoiceData<number>[] = [
     value: 10,
   },
   {
-    name: '玄野武宏',
+    name: '玄野武宏(ノーマル)',
     value: 11,
+  },
+  {
+    name: '玄野武宏(喜び)',
+    value: 39,
+  },
+  {
+    name: '玄野武宏(ツンギレ)',
+    value: 40,
+  },
+  {
+    name: '玄野武宏(悲しみ)',
+    value: 41,
   },
   {
     name: '白上虎太郎(ふつう)',
@@ -113,6 +125,9 @@ export const speakerList0: ApplicationCommandOptionChoiceData<number>[] = [
     name: '白上虎太郎(びえーん)',
     value: 35,
   },
+]
+
+export const speakerList1: ApplicationCommandOptionChoiceData<number>[] = [
   {
     name: '青山龍星',
     value: 13,
@@ -121,9 +136,6 @@ export const speakerList0: ApplicationCommandOptionChoiceData<number>[] = [
     name: '冥鳴ひまり',
     value: 14,
   },
-]
-
-export const speakerList1: ApplicationCommandOptionChoiceData<number>[] = [
   {
     name: '九州そら(ノーマル)',
     value: 16,
@@ -187,6 +199,85 @@ export const speakerList1: ApplicationCommandOptionChoiceData<number>[] = [
   {
     name: 'No.7(読み聞かせ)',
     value: 31,
+  },
+]
+
+export const speakerList2: ApplicationCommandOptionChoiceData<number>[] = [
+  {
+    name: 'ちび式じい',
+    value: 42,
+  },
+  {
+    name: '櫻歌ミコ(ノーマル)',
+    value: 43,
+  },
+  {
+    name: '櫻歌ミコ(第二形態)',
+    value: 44,
+  },
+  {
+    name: '櫻歌ミコ(ロリ)',
+    value: 45,
+  },
+  {
+    name: '小夜/SAYO',
+    value: 46,
+  },
+  {
+    name: 'ナースロボ＿タイプＴ(ノーマル)',
+    value: 47,
+  },
+  {
+    name: 'ナースロボ＿タイプＴ(楽々)',
+    value: 48,
+  },
+  {
+    name: 'ナースロボ＿タイプＴ(恐怖)',
+    value: 49,
+  },
+  {
+    name: 'ナースロボ＿タイプＴ(内緒話)',
+    value: 50,
+  },
+  {
+    name: '†聖騎士 紅桜†',
+    value: 51,
+  },
+  {
+    name: '雀松朱司',
+    value: 52,
+  },
+  {
+    name: '麒ヶ島宗麟',
+    value: 53,
+  },
+  {
+    name: '春歌ナナ',
+    value: 54,
+  },
+  {
+    name: '猫使アル(ノーマル)',
+    value: 55,
+  },
+  {
+    name: '猫使アル(おちつき)',
+    value: 56,
+  },
+  {
+    name: '猫使アル(うきうき)',
+    value: 57,
+  },
+  {
+    name: '猫使ビィ(ノーマル)',
+    value: 58,
+  },
+  {
+    name: '猫使ビィ(おちつき)',
+    value: 59,
+  },
+  {
+    name: '猫使ビィ(人見知り)',
+    value: 60,
   },
 ]
 
