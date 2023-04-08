@@ -70,7 +70,7 @@ export default class ConnectionManager {
         await this.readText()
       }
     })
-    this.connection.on('stateChange', async (oldState, newState) => {
+    this.connection.on('stateChange', async (_, newState) => {
       if (newState.status === VoiceConnectionStatus.Disconnected) {
         if (
           newState.reason === VoiceConnectionDisconnectReason.WebSocketClose &&
@@ -114,23 +114,6 @@ export default class ConnectionManager {
           this.readyLock = false
         }
       }
-
-      if (
-        oldState.status === VoiceConnectionStatus.Ready &&
-        newState.status === VoiceConnectionStatus.Connecting
-      ) {
-        connection.configureNetworking()
-      }
-      const oldNetworking = Reflect.get(oldState, 'networking')
-      const newNetworking = Reflect.get(newState, 'networking')
-
-      const networkStateChangeHandler = (_: any, newNetworkState: any) => {
-        const newUdp = Reflect.get(newNetworkState, 'udp')
-        clearInterval(newUdp?.keepAliveInterval)
-      }
-
-      oldNetworking?.off('stateChange', networkStateChangeHandler)
-      newNetworking?.on('stateChange', networkStateChangeHandler)
     })
   }
 
