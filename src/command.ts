@@ -12,6 +12,7 @@ import TextToSpeechBot, {
   priorityList,
   speakerList0,
   speakerList1,
+  speakerList2,
 } from '@/src/textToSpeechBot'
 
 export type CustomApplicationCommandData = ApplicationCommandData & {
