@@ -346,7 +346,11 @@ export default class TextToSpeechBot extends EventEmitter {
           'また、TTSにおける文字列の解析等において、MeCab、NAIST Japanese Dictionary及びそれらを内包するOpenJTalkを用いています。',
       })
     }
-    await sendReply(interaction, { embeds: [embed] })
+    try {
+      await sendReply(interaction, { embeds: [embed] })
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async messageCatcher(message: Message): Promise<void> {
