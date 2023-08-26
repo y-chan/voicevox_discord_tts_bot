@@ -178,7 +178,7 @@ export default class ConnectionManager {
       }
       this.readQueue.push({
         content: message.cleanContent,
-        userName: message.member!.nickname || message.author.username,
+        userName: message.member!.nickname || message.author.displayName,
         userId: message.author.id,
         containAttachment,
       })

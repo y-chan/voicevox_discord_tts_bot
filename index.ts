@@ -61,7 +61,7 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
   ) {
     const member = oldState.member as GuildMember
     connectionManager.readQueue.push({
-      content: `${member.nickname || member.user.username}が入室しました`,
+      content: `${member.nickname || member.user.displayName}が入室しました`,
       userName: '',
     })
     await connectionManager.readText()
@@ -77,7 +77,7 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
     } else {
       const member = oldState.member as GuildMember
       connectionManager.readQueue.push({
-        content: `${member.nickname || member.user.username}が退室しました`,
+        content: `${member.nickname || member.user.displayName}が退室しました`,
         userName: '',
       })
       await connectionManager.readText()
@@ -92,7 +92,9 @@ client.on('ready', async () => {
   })
   await GuildSetting.sync()
   if (!client.application?.owner) await client.application?.fetch()
-  await client.application!.commands.set(client.commandList)
+  const guild = await client.guilds.fetch('797151810174451762')
+  await guild.commands.set(client.commandList)
+  // await client.application!.commands.set(client.commandList)
 })
 
 void client.login(process.env.BOT_TOKEN)
