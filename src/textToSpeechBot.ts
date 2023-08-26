@@ -375,6 +375,7 @@ export default class TextToSpeechBot extends EventEmitter {
         undefined,
         false
       )
+      return
     }
 
     const voiceChannel = (interaction.member as GuildMember | null)?.voice
