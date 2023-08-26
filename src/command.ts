@@ -257,9 +257,9 @@ export function createCommandList(
         if (subCommand === 'show') {
           await client.textToSpeechBot.getWords(interaction)
         } else if (subCommand === 'register') {
-          const surface = interaction.options.getString('surface')
-          const yomi = interaction.options.getString('yomi')
-          const priority = interaction.options.getInteger('priority')
+          const surface = interaction.options.get('surface')?.value as string
+          const yomi = interaction.options.get('yomi')?.value as string
+          const priority = interaction.options.get('priority')?.value as number
           if (!surface || !yomi) {
             await interaction.reply({
               ephemeral: true,
@@ -274,7 +274,7 @@ export function createCommandList(
             priority
           )
         } else if (subCommand === 'delete') {
-          const surface = interaction.options.getString('surface')
+          const surface = interaction.options.get('surface')?.value as string
           if (!surface) {
             await interaction.reply({
               ephemeral: true,
