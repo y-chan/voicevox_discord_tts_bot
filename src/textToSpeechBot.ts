@@ -14,7 +14,7 @@ import {
   Snowflake,
 } from 'discord.js'
 import EventEmitter from 'events'
-import Engine, { AccentPhrase } from 'node-voicevox-engine'
+import Engine, { AccentPhrase } from 'node-sharevox-engine'
 
 import GuildSetting from '@/model/guildSetting'
 import Client from '@/src/client'
@@ -28,256 +28,54 @@ import {
   sleep,
 } from '@/src/util'
 
-export const speakerList0: ApplicationCommandOptionChoiceData<number>[] = [
+export const speakerList: ApplicationCommandOptionChoiceData<number>[] = [
   {
-    name: '四国めたん(ノーマル)',
-    value: 2,
-  },
-  {
-    name: '四国めたん(あまあま)',
-    value: 0,
-  },
-  {
-    name: '四国めたん(セクシー)',
-    value: 4,
-  },
-  {
-    name: '四国めたん(ツンツン)',
-    value: 6,
-  },
-  {
-    name: '四国めたん(ささやき)',
-    value: 36,
-  },
-  {
-    name: '四国めたん(ヒソヒソ)',
-    value: 37,
-  },
-  {
-    name: 'ずんだもん(ノーマル)',
-    value: 3,
-  },
-  {
-    name: 'ずんだもん(あまあま)',
-    value: 1,
-  },
-  {
-    name: 'ずんだもん(セクシー)',
-    value: 5,
-  },
-  {
-    name: 'ずんだもん(ツンツン)',
-    value: 7,
-  },
-  {
-    name: 'ずんだもん(ささやき)',
-    value: 22,
-  },
-  {
-    name: 'ずんだもん(ヒソヒソ)',
-    value: 38,
-  },
-  {
-    name: '春日部つむぎ',
-    value: 8,
-  },
-  {
-    name: '波音リツ',
-    value: 9,
-  },
-  {
-    name: '雨晴はう',
-    value: 10,
-  },
-  {
-    name: '玄野武宏(ノーマル)',
-    value: 11,
-  },
-  {
-    name: '玄野武宏(喜び)',
-    value: 39,
-  },
-  {
-    name: '玄野武宏(ツンギレ)',
-    value: 40,
-  },
-  {
-    name: '玄野武宏(悲しみ)',
-    value: 41,
-  },
-  {
-    name: '白上虎太郎(ふつう)',
-    value: 12,
-  },
-  {
-    name: '白上虎太郎(わーい)',
-    value: 32,
-  },
-  {
-    name: '白上虎太郎(びくびく)',
-    value: 33,
-  },
-  {
-    name: '白上虎太郎(おこ)',
-    value: 34,
-  },
-  {
-    name: '白上虎太郎(びえーん)',
-    value: 35,
-  },
-]
-
-export const speakerList1: ApplicationCommandOptionChoiceData<number>[] = [
-  {
-    name: '青山龍星',
-    value: 13,
-  },
-  {
-    name: '冥鳴ひまり',
+    name: '小春音アミ(ノーマル)',
     value: 14,
   },
   {
-    name: '九州そら(ノーマル)',
-    value: 16,
-  },
-  {
-    name: '九州そら(あまあま)',
+    name: '小春音アミ(喜び)',
     value: 15,
   },
   {
-    name: '九州そら(セクシー)',
+    name: '小春音アミ(怒り)',
+    value: 16,
+  },
+  {
+    name: '小春音アミ(悲しみ)',
     value: 17,
   },
   {
-    name: '九州そら(ツンツン)',
+    name: 'つくよみちゃん(おしとやか)',
     value: 18,
   },
   {
-    name: '九州そら(ささやき)',
-    value: 19,
-  },
-  {
-    name: 'もち子さん',
+    name: '白痴ー/黒聡鵜月(虚偽)',
     value: 20,
   },
   {
-    name: '剣崎雌雄',
+    name: 'Yくん/開発者(ノーマル)',
+    value: 19,
+  },
+  {
+    name: 'らごぱすホワイト(ノーマル)',
+    value: 22,
+  },
+  {
+    name: 'らごぱすブラック(ノーマル)',
     value: 21,
   },
   {
-    name: 'WhiteCUL(ノーマル)',
+    name: '風花ゆき(ノーマル)',
     value: 23,
   },
   {
-    name: 'WhiteCUL(たのしい)',
+    name: '安倍広葉(ノーマル)',
     value: 24,
   },
   {
-    name: 'WhiteCUL(かなしい)',
+    name: '鈴乃(ノーマル)',
     value: 25,
-  },
-  {
-    name: 'WhiteCUL(びえーん)',
-    value: 26,
-  },
-  {
-    name: '後鬼(人間ver.)',
-    value: 27,
-  },
-  {
-    name: '後鬼(ぬいぐるみver.)',
-    value: 28,
-  },
-  {
-    name: 'No.7(ノーマル)',
-    value: 29,
-  },
-  {
-    name: 'No.7(アナウンス)',
-    value: 30,
-  },
-  {
-    name: 'No.7(読み聞かせ)',
-    value: 31,
-  },
-]
-
-export const speakerList2: ApplicationCommandOptionChoiceData<number>[] = [
-  {
-    name: 'ちび式じい',
-    value: 42,
-  },
-  {
-    name: '櫻歌ミコ(ノーマル)',
-    value: 43,
-  },
-  {
-    name: '櫻歌ミコ(第二形態)',
-    value: 44,
-  },
-  {
-    name: '櫻歌ミコ(ロリ)',
-    value: 45,
-  },
-  {
-    name: '小夜/SAYO',
-    value: 46,
-  },
-  {
-    name: 'ナースロボ＿タイプＴ(ノーマル)',
-    value: 47,
-  },
-  {
-    name: 'ナースロボ＿タイプＴ(楽々)',
-    value: 48,
-  },
-  {
-    name: 'ナースロボ＿タイプＴ(恐怖)',
-    value: 49,
-  },
-  {
-    name: 'ナースロボ＿タイプＴ(内緒話)',
-    value: 50,
-  },
-  {
-    name: '†聖騎士 紅桜†',
-    value: 51,
-  },
-  {
-    name: '雀松朱司',
-    value: 52,
-  },
-  {
-    name: '麒ヶ島宗麟',
-    value: 53,
-  },
-  {
-    name: '春歌ナナ',
-    value: 54,
-  },
-  {
-    name: '猫使アル(ノーマル)',
-    value: 55,
-  },
-  {
-    name: '猫使アル(おちつき)',
-    value: 56,
-  },
-  {
-    name: '猫使アル(うきうき)',
-    value: 57,
-  },
-  {
-    name: '猫使ビィ(ノーマル)',
-    value: 58,
-  },
-  {
-    name: '猫使ビィ(おちつき)',
-    value: 59,
-  },
-  {
-    name: '猫使ビィ(人見知り)',
-    value: 60,
   },
 ]
 
@@ -306,7 +104,7 @@ export const priorityList: ApplicationCommandOptionChoiceData<number>[] = [
 
 export default class TextToSpeechBot extends EventEmitter {
   public defaultVolume = 0.5
-  public defaultSpeakerId = 0
+  public defaultSpeakerId = speakerList[0].value
   public defaultSpeakSpeed = 1.0
   public defaultName = true
   public engine: Engine
@@ -316,7 +114,7 @@ export default class TextToSpeechBot extends EventEmitter {
     this.on('remove', (guildId: Snowflake) => {
       this.client.connectionManagers.delete(guildId)
     })
-    this.engine = new Engine(process.env.VOICEVOX_CORE as string, false)
+    this.engine = new Engine(process.env.SHAREVOX_CORE as string, false)
   }
 
   async sendEmbed(
@@ -333,16 +131,16 @@ export default class TextToSpeechBot extends EventEmitter {
         url: bot.avatarURL() || undefined,
       })
       .setFooter({
-        text: 'Powered by VOICEVOX',
-        iconURL: 'https://avatars.githubusercontent.com/u/95246571',
+        text: 'Powered by SHAREVOX',
+        iconURL: 'https://avatars.githubusercontent.com/u/100279923',
       })
     if (description) embed.setDescription(description)
     if (license) {
       embed.addFields({
         name: 'ライセンス事項',
         value:
-          '本BotのTTS機能は、ヒホ氏によって公開されている音声合成アプリケーションVOICEVOXの音声合成エンジンを利用しています。' +
-          'YouTubeでのライブ配信等の際にこのBotを利用する場合は「VOICEVOX:四国めたん」や「VOICEVOX:ずんだもん」などの表記が必要となりますのでご注意ください。' +
+          '本BotのTTS機能は、Yちゃんによって公開されている音声合成アプリケーションSHAREVOXの音声合成エンジンを利用しています。' +
+          'YouTubeでのライブ配信等の際にこのBotを利用する場合は「SHAREVOX:小春音アミ」や「SHAREVOX:つくよみちゃん」などの表記が必要となりますのでご注意ください。' +
           'また、TTSにおける文字列の解析等において、MeCab、NAIST Japanese Dictionary及びそれらを内包するOpenJTalkを用いています。',
       })
     }
@@ -569,13 +367,7 @@ export default class TextToSpeechBot extends EventEmitter {
       connectionManager.dbFound = true
     }
 
-    let speaker = speakerList0.find((value) => value.value === speakerId)
-    if (!speaker) {
-      speaker = speakerList1.find((value) => value.value === speakerId)
-      if (!speaker) {
-        speaker = speakerList2.find((value) => value.value === speakerId)
-      }
-    }
+    const speaker = speakerList.find((value) => value.value === speakerId)
     const speakerName = speaker!.name
 
     await this.sendEmbed(
@@ -600,19 +392,9 @@ export default class TextToSpeechBot extends EventEmitter {
       return
     }
 
-    let speaker = speakerList0.find(
+    const speaker = speakerList.find(
       (value) => value.value === connectionManager.speakerId
     )
-    if (!speaker) {
-      speaker = speakerList1.find(
-        (value) => value.value === connectionManager.speakerId
-      )
-      if (!speaker) {
-        speaker = speakerList2.find(
-          (value) => value.value === connectionManager.speakerId
-        )
-      }
-    }
     const speakerName = speaker!.name
     await this.sendEmbed(
       interaction,

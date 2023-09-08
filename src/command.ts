@@ -10,9 +10,7 @@ import Client from '@/src/client'
 import ConnectionManager from '@/src/connectionManager'
 import TextToSpeechBot, {
   priorityList,
-  speakerList0,
-  speakerList1,
-  speakerList2,
+  speakerList,
 } from '@/src/textToSpeechBot'
 
 export type CustomApplicationCommandData = ApplicationCommandData & {
@@ -43,7 +41,7 @@ export function createCommandList(
 ): CustomApplicationCommandData[] {
   return [
     {
-      name: 'voicevox',
+      name: 'sharevox',
       description:
         'Botを呼び出した人が参加しているボイスチャンネルに参加して、このコマンドを呼び出したチャンネルのメッセージを読み上げます。',
       async execute(interaction, connectionManager) {
@@ -52,7 +50,7 @@ export function createCommandList(
       },
     },
     {
-      name: 'vstop',
+      name: 'sstop',
       description:
         'メッセージの読み上げが行われている場合に、それを終了します。',
       async execute(interaction, connectionManager) {
@@ -61,7 +59,7 @@ export function createCommandList(
       },
     },
     {
-      name: 'vvolume',
+      name: 'svolume',
       description:
         '音量を設定できます。音量を入力しなかった場合は、今の音量を表示します。',
       options: [
@@ -87,30 +85,16 @@ export function createCommandList(
       },
     },
     {
-      name: 'vspeaker',
+      name: 'sspeaker',
       description:
         '話者を設定できます。話者を選択しなかった場合は、今の話者を表示します。話者リスト2が優先されます。',
       options: [
         {
           name: 'speaker',
           type: ApplicationCommandOptionType.Integer,
-          description: '話者を選択してください(話者リスト1)。',
+          description: '話者を選択してください。',
           required: false,
-          choices: speakerList0,
-        },
-        {
-          name: 'speaker1',
-          type: ApplicationCommandOptionType.Integer,
-          description: '話者を選択してください(話者リスト2)。',
-          required: false,
-          choices: speakerList1,
-        },
-        {
-          name: 'speaker2',
-          type: ApplicationCommandOptionType.Integer,
-          description: '話者を選択してください(話者リスト3)。',
-          required: false,
-          choices: speakerList2,
+          choices: speakerList,
         },
       ],
       async execute(interaction, connectionManager) {
@@ -145,7 +129,7 @@ export function createCommandList(
       },
     },
     {
-      name: 'vspeed',
+      name: 'sspeed',
       description:
         '話速を設定できます。話速を入力しなかった場合は、今の話速を表示します。',
       options: [
@@ -174,7 +158,7 @@ export function createCommandList(
       },
     },
     {
-      name: 'vname',
+      name: 'sname',
       description:
         '名前を読み上げるか否かを設定できます。選択しなかった場合、今の設定を表示します。',
       options: [
@@ -203,7 +187,7 @@ export function createCommandList(
       },
     },
     {
-      name: 'vdict',
+      name: 'sdict',
       description: '単語の読み上げ方を指定する辞書を操作出来ます。',
       options: [
         {

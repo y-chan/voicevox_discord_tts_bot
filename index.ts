@@ -1,5 +1,5 @@
 if (
-  process.env.VOICEVOX_CORE === undefined ||
+  process.env.SHAREVOX_CORE === undefined ||
   process.env.BOT_TOKEN === undefined
 ) {
   throw Error('環境変数を設定してください')

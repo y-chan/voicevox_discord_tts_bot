@@ -1,12 +1,10 @@
-# VOICEVOX Discord TTS Bot
+# SHAREVOX Discord TTS Bot
 
 ## What's this?
 
-[VOICEVOX ENGINE](https://github.com/Hiroshiba/voicevox_engine) の
+[SHAREVOX ENGINE](https://github.com/SHAREVOX/sharevox_engine) の
 [Node.js版](https://github.com/y-chan/node-voicevox-engine) を利用したDiscord向けTTS Botです。
-[discord.pyを用いたバージョン](https://github.com/y-chan/voicevox_discord_tts_sample) の後継です。
-discord.pyがメンテナンス終了したことを受け、discord.jsへ移行したものになります。
-VOICEVOX ENGINE自体が、同時に大量に音声合成を行うことは向いていないため、利用したい人がセルフホストして利用してください。  
+SHAREVOX ENGINE自体が、同時に大量に音声合成を行うことは向いていないため、利用したい人がセルフホストして利用してください。  
 また、本READMEはBot構築に関してある程度知識がある前提で書かれています。ご了承ください。
 
 ## 貢献者の方へ
@@ -47,7 +45,7 @@ unzip libtorch-cxx11-abi-shared-with-deps-1.9.1+cpu.zip
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/libtorch/lib"
 ```
 
-### VOICEVOX Core のインストール
+### SHAREVOX Core のインストール
 
 ```bash
 # VOICEVOX Core (0.9.4)を最上層にインストールする
