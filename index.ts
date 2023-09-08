@@ -92,9 +92,7 @@ client.on('ready', async () => {
   })
   await GuildSetting.sync()
   if (!client.application?.owner) await client.application?.fetch()
-  const guild = await client.guilds.fetch('797151810174451762')
-  await guild.commands.set(client.commandList)
-  // await client.application!.commands.set(client.commandList)
+  await client.application!.commands.set(client.commandList)
 })
 
 void client.login(process.env.BOT_TOKEN)
